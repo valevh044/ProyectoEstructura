@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package datos;
 
 /**
@@ -9,5 +6,27 @@ package datos;
  * @author valev
  */
 public class material {
+    private tipoMaterial tipo;
+
+    public material(tipoMaterial tipo) {
+        this.tipo = tipo;
+    }
+
+    public tipoMaterial getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(tipoMaterial tipo) {
+        this.tipo = tipo;
+    }
     
+    @Override
+    public String toString() {
+
+        if (tipo == null) {
+            return "Material sin tipo";
+        }
+
+        return tipo.toString();
+    }
 }
