@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Vista;
 
-/**
- *
- * @author valev
- */
 public class FrmFabrica extends javax.swing.JFrame {
 
     /**
@@ -15,6 +7,9 @@ public class FrmFabrica extends javax.swing.JFrame {
      */
     public FrmFabrica() {
         initComponents();
+        setSize(1220, 900);
+        setLocationRelativeTo(null);
+
     }
 
     /**
@@ -26,17 +21,368 @@ public class FrmFabrica extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pnlPrincipal = new javax.swing.JPanel();
+        pnlEncabezado = new javax.swing.JPanel();
+        lblTitulo = new javax.swing.JLabel();
+        lblSubtitulo = new javax.swing.JLabel();
+        pnlEconomía = new javax.swing.JPanel();
+        lblDineroTitulo = new javax.swing.JLabel();
+        lblObjetivo = new javax.swing.JLabel();
+        lblObjetivoTitulo = new javax.swing.JLabel();
+        lblDinero1 = new javax.swing.JLabel();
+        jProgressBar1 = new javax.swing.JProgressBar();
+        pnlHub = new javax.swing.JPanel();
+        lblTituloHub = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblPedidos = new javax.swing.JTable();
+        pnlProduccion = new javax.swing.JPanel();
+        lblTituloProduccion = new javax.swing.JLabel();
+        pnlLineal = new javax.swing.JPanel();
+        lblLinea1 = new javax.swing.JLabel();
+        lblEstadoLineal = new javax.swing.JLabel();
+        lblPedidoLineal = new javax.swing.JLabel();
+        pnlLineal2 = new javax.swing.JPanel();
+        lblLinea2 = new javax.swing.JLabel();
+        lblEstadoLineal2 = new javax.swing.JLabel();
+        lblPedidoLineal2 = new javax.swing.JLabel();
+        pnlLineal3 = new javax.swing.JPanel();
+        lblLinea3 = new javax.swing.JLabel();
+        lblEstadoLineal3 = new javax.swing.JLabel();
+        lblPedidoLineal3 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("CarFactory-Fide");
+        setPreferredSize(new java.awt.Dimension(1100, 700));
+        setResizable(false);
+
+        pnlPrincipal.setBackground(new java.awt.Color(23, 43, 61));
+
+        pnlEncabezado.setBackground(new java.awt.Color(32, 61, 86));
+
+        lblTitulo.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(255, 255, 255));
+        lblTitulo.setText("CarFactory-Fide");
+
+        lblSubtitulo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        lblSubtitulo.setForeground(new java.awt.Color(190, 205, 220));
+        lblSubtitulo.setText("Simulador de gestión automotriz");
+
+        javax.swing.GroupLayout pnlEncabezadoLayout = new javax.swing.GroupLayout(pnlEncabezado);
+        pnlEncabezado.setLayout(pnlEncabezadoLayout);
+        pnlEncabezadoLayout.setHorizontalGroup(
+            pnlEncabezadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlEncabezadoLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(pnlEncabezadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblSubtitulo)
+                    .addComponent(lblTitulo))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlEncabezadoLayout.setVerticalGroup(
+            pnlEncabezadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlEncabezadoLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(lblTitulo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblSubtitulo)
+                .addContainerGap(10, Short.MAX_VALUE))
+        );
+
+        pnlEconomía.setBackground(new java.awt.Color(32, 61, 86));
+        pnlEconomía.setPreferredSize(new java.awt.Dimension(940, 190));
+
+        lblDineroTitulo.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        lblDineroTitulo.setForeground(new java.awt.Color(190, 205, 220));
+        lblDineroTitulo.setText("Dinero Acumulado");
+
+        lblObjetivo.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        lblObjetivo.setForeground(new java.awt.Color(255, 255, 255));
+        lblObjetivo.setText("$90.000");
+
+        lblObjetivoTitulo.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        lblObjetivoTitulo.setForeground(new java.awt.Color(190, 205, 220));
+        lblObjetivoTitulo.setText("Objetivo Económico");
+
+        lblDinero1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        lblDinero1.setForeground(new java.awt.Color(255, 255, 255));
+        lblDinero1.setText("$45.000");
+
+        jProgressBar1.setValue(50);
+        jProgressBar1.setStringPainted(true);
+
+        javax.swing.GroupLayout pnlEconomíaLayout = new javax.swing.GroupLayout(pnlEconomía);
+        pnlEconomía.setLayout(pnlEconomíaLayout);
+        pnlEconomíaLayout.setHorizontalGroup(
+            pnlEconomíaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlEconomíaLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(pnlEconomíaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlEconomíaLayout.createSequentialGroup()
+                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 855, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(pnlEconomíaLayout.createSequentialGroup()
+                        .addGroup(pnlEconomíaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblDineroTitulo)
+                            .addComponent(lblDinero1))
+                        .addGap(128, 128, 128)
+                        .addGroup(pnlEconomíaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblObjetivo)
+                            .addComponent(lblObjetivoTitulo))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        pnlEconomíaLayout.setVerticalGroup(
+            pnlEconomíaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlEconomíaLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(pnlEconomíaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblDineroTitulo)
+                    .addComponent(lblObjetivoTitulo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlEconomíaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblDinero1)
+                    .addComponent(lblObjetivo))
+                .addGap(43, 43, 43)
+                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(65, Short.MAX_VALUE))
+        );
+
+        pnlHub.setBackground(new java.awt.Color(32, 61, 86));
+        pnlHub.setPreferredSize(new java.awt.Dimension(940, 190));
+
+        lblTituloHub.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        lblTituloHub.setForeground(new java.awt.Color(255, 255, 255));
+        lblTituloHub.setText("Hub - Pedidos Entrantes");
+
+        tblPedidos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "N.º Pedido", "Tipo de automóvil", "Estado"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblPedidos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(tblPedidos);
+
+        javax.swing.GroupLayout pnlHubLayout = new javax.swing.GroupLayout(pnlHub);
+        pnlHub.setLayout(pnlHubLayout);
+        pnlHubLayout.setHorizontalGroup(
+            pnlHubLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlHubLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(pnlHubLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTituloHub)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(33, Short.MAX_VALUE))
+        );
+        pnlHubLayout.setVerticalGroup(
+            pnlHubLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlHubLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTituloHub)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(9, Short.MAX_VALUE))
+        );
+
+        pnlProduccion.setBackground(new java.awt.Color(32, 61, 86));
+
+        lblTituloProduccion.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        lblTituloProduccion.setForeground(new java.awt.Color(255, 255, 255));
+        lblTituloProduccion.setText("Líneas de Producción");
+
+        pnlLineal.setBackground(new java.awt.Color(23, 43, 61));
+
+        lblLinea1.setBackground(new java.awt.Color(255, 255, 255));
+        lblLinea1.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        lblLinea1.setForeground(new java.awt.Color(255, 255, 255));
+        lblLinea1.setText("Línea 1");
+
+        lblEstadoLineal.setBackground(new java.awt.Color(255, 255, 255));
+        lblEstadoLineal.setForeground(new java.awt.Color(255, 255, 255));
+        lblEstadoLineal.setText("Estado: Disponible");
+
+        lblPedidoLineal.setBackground(new java.awt.Color(255, 255, 255));
+        lblPedidoLineal.setForeground(new java.awt.Color(255, 255, 255));
+        lblPedidoLineal.setText("Pedido: Sin asiganr");
+
+        javax.swing.GroupLayout pnlLinealLayout = new javax.swing.GroupLayout(pnlLineal);
+        pnlLineal.setLayout(pnlLinealLayout);
+        pnlLinealLayout.setHorizontalGroup(
+            pnlLinealLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlLinealLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(pnlLinealLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblPedidoLineal)
+                    .addComponent(lblEstadoLineal)
+                    .addComponent(lblLinea1))
+                .addContainerGap(236, Short.MAX_VALUE))
+        );
+        pnlLinealLayout.setVerticalGroup(
+            pnlLinealLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlLinealLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(lblLinea1)
+                .addGap(18, 18, 18)
+                .addComponent(lblEstadoLineal)
+                .addGap(18, 18, 18)
+                .addComponent(lblPedidoLineal)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pnlLineal2.setBackground(new java.awt.Color(23, 43, 61));
+
+        lblLinea2.setBackground(new java.awt.Color(255, 255, 255));
+        lblLinea2.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        lblLinea2.setForeground(new java.awt.Color(255, 255, 255));
+        lblLinea2.setText("Línea 2");
+
+        lblEstadoLineal2.setBackground(new java.awt.Color(255, 255, 255));
+        lblEstadoLineal2.setForeground(new java.awt.Color(255, 255, 255));
+        lblEstadoLineal2.setText("Estado: Disponible");
+
+        lblPedidoLineal2.setBackground(new java.awt.Color(255, 255, 255));
+        lblPedidoLineal2.setForeground(new java.awt.Color(255, 255, 255));
+        lblPedidoLineal2.setText("Pedido: Sin asiganr");
+
+        javax.swing.GroupLayout pnlLineal2Layout = new javax.swing.GroupLayout(pnlLineal2);
+        pnlLineal2.setLayout(pnlLineal2Layout);
+        pnlLineal2Layout.setHorizontalGroup(
+            pnlLineal2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlLineal2Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(pnlLineal2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblPedidoLineal2)
+                    .addComponent(lblEstadoLineal2)
+                    .addComponent(lblLinea2))
+                .addContainerGap(247, Short.MAX_VALUE))
+        );
+        pnlLineal2Layout.setVerticalGroup(
+            pnlLineal2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlLineal2Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(lblLinea2)
+                .addGap(18, 18, 18)
+                .addComponent(lblEstadoLineal2)
+                .addGap(18, 18, 18)
+                .addComponent(lblPedidoLineal2)
+                .addContainerGap(74, Short.MAX_VALUE))
+        );
+
+        pnlLineal3.setBackground(new java.awt.Color(23, 43, 61));
+
+        lblLinea3.setBackground(new java.awt.Color(255, 255, 255));
+        lblLinea3.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        lblLinea3.setForeground(new java.awt.Color(255, 255, 255));
+        lblLinea3.setText("Línea 3");
+
+        lblEstadoLineal3.setBackground(new java.awt.Color(255, 255, 255));
+        lblEstadoLineal3.setForeground(new java.awt.Color(255, 255, 255));
+        lblEstadoLineal3.setText("Estado: Disponible");
+
+        lblPedidoLineal3.setBackground(new java.awt.Color(255, 255, 255));
+        lblPedidoLineal3.setForeground(new java.awt.Color(255, 255, 255));
+        lblPedidoLineal3.setText("Pedido: Sin asiganr");
+
+        javax.swing.GroupLayout pnlLineal3Layout = new javax.swing.GroupLayout(pnlLineal3);
+        pnlLineal3.setLayout(pnlLineal3Layout);
+        pnlLineal3Layout.setHorizontalGroup(
+            pnlLineal3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlLineal3Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(pnlLineal3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblPedidoLineal3)
+                    .addComponent(lblEstadoLineal3)
+                    .addComponent(lblLinea3))
+                .addContainerGap(235, Short.MAX_VALUE))
+        );
+        pnlLineal3Layout.setVerticalGroup(
+            pnlLineal3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlLineal3Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(lblLinea3)
+                .addGap(18, 18, 18)
+                .addComponent(lblEstadoLineal3)
+                .addGap(18, 18, 18)
+                .addComponent(lblPedidoLineal3)
+                .addContainerGap(74, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout pnlProduccionLayout = new javax.swing.GroupLayout(pnlProduccion);
+        pnlProduccion.setLayout(pnlProduccionLayout);
+        pnlProduccionLayout.setHorizontalGroup(
+            pnlProduccionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlProduccionLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(pnlProduccionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTituloProduccion)
+                    .addGroup(pnlProduccionLayout.createSequentialGroup()
+                        .addComponent(pnlLineal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(pnlLineal2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(pnlLineal3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlProduccionLayout.setVerticalGroup(
+            pnlProduccionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlProduccionLayout.createSequentialGroup()
+                .addContainerGap(14, Short.MAX_VALUE)
+                .addComponent(lblTituloProduccion)
+                .addGap(18, 18, 18)
+                .addGroup(pnlProduccionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(pnlLineal3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlLineal2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlLineal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(22, 22, 22))
+        );
+
+        javax.swing.GroupLayout pnlPrincipalLayout = new javax.swing.GroupLayout(pnlPrincipal);
+        pnlPrincipal.setLayout(pnlPrincipalLayout);
+        pnlPrincipalLayout.setHorizontalGroup(
+            pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlEncabezado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(pnlPrincipalLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(pnlHub, javax.swing.GroupLayout.DEFAULT_SIZE, 1162, Short.MAX_VALUE)
+                    .addComponent(pnlEconomía, javax.swing.GroupLayout.DEFAULT_SIZE, 1162, Short.MAX_VALUE)
+                    .addComponent(pnlProduccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+        pnlPrincipalLayout.setVerticalGroup(
+            pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPrincipalLayout.createSequentialGroup()
+                .addComponent(pnlEncabezado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(pnlEconomía, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(53, 53, 53)
+                .addComponent(pnlHub, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51)
+                .addComponent(pnlProduccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(9, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(pnlPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(pnlPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -78,5 +424,33 @@ public class FrmFabrica extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblDinero1;
+    private javax.swing.JLabel lblDineroTitulo;
+    private javax.swing.JLabel lblEstadoLineal;
+    private javax.swing.JLabel lblEstadoLineal2;
+    private javax.swing.JLabel lblEstadoLineal3;
+    private javax.swing.JLabel lblLinea1;
+    private javax.swing.JLabel lblLinea2;
+    private javax.swing.JLabel lblLinea3;
+    private javax.swing.JLabel lblObjetivo;
+    private javax.swing.JLabel lblObjetivoTitulo;
+    private javax.swing.JLabel lblPedidoLineal;
+    private javax.swing.JLabel lblPedidoLineal2;
+    private javax.swing.JLabel lblPedidoLineal3;
+    private javax.swing.JLabel lblSubtitulo;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblTituloHub;
+    private javax.swing.JLabel lblTituloProduccion;
+    private javax.swing.JPanel pnlEconomía;
+    private javax.swing.JPanel pnlEncabezado;
+    private javax.swing.JPanel pnlHub;
+    private javax.swing.JPanel pnlLineal;
+    private javax.swing.JPanel pnlLineal2;
+    private javax.swing.JPanel pnlLineal3;
+    private javax.swing.JPanel pnlPrincipal;
+    private javax.swing.JPanel pnlProduccion;
+    private javax.swing.JTable tblPedidos;
     // End of variables declaration//GEN-END:variables
 }
