@@ -3,13 +3,13 @@ package Estructuras;
 
 import datos.EmpleadoAscenso;
 
-public class ListaAscensos {
+public class listaAscensos {
 
     
     private NodoAscenso cabeza;
 
     
-    public ListaAscensos() {
+    public listaAscensos() {
         cabeza = null;
     }
 

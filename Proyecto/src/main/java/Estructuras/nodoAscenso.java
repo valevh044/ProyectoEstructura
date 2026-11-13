@@ -3,14 +3,14 @@ package Estructuras;
 
 import datos.EmpleadoAscenso;
 
-public class NodoAscenso {
+public class nodoAscenso {
 
     
     private EmpleadoAscenso empleado;
     private NodoAscenso siguiente;
 
     
-    public NodoAscenso(EmpleadoAscenso empleado) {
+    public nodoAscenso(EmpleadoAscenso empleado) {
         this.empleado = empleado;
         this.siguiente = null;
     }
