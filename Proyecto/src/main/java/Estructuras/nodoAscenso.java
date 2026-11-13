@@ -26,12 +26,12 @@ public class nodoAscenso {
     }
 
   
-    public NodoAscenso getSiguiente() {
+    public nodoAscenso getSiguiente() {
         return siguiente;
     }
 
    
-    public void setSiguiente(NodoAscenso siguiente) {
+    public void setSiguiente(nodoAscenso siguiente) {
         this.siguiente = siguiente;
     }
 }

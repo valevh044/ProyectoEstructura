@@ -6,7 +6,7 @@ import datos.EmpleadoAscenso;
 public class listaAscensos {
 
     
-    private NodoAscenso cabeza;
+    private nodoAscenso cabeza;
 
     
     public listaAscensos() {
@@ -21,13 +21,13 @@ public class listaAscensos {
     
     public void agregar(EmpleadoAscenso empleado) {
 
-        NodoAscenso nuevo = new NodoAscenso(empleado);
+        nodoAscenso nuevo = new nodoAscenso(empleado);
 
         if (estaVacia()) {
             cabeza = nuevo;
         } else {
 
-            NodoAscenso actual = cabeza;
+            nodoAscenso actual = cabeza;
 
             while (actual.getSiguiente() != null) {
                 actual = actual.getSiguiente();
@@ -40,7 +40,7 @@ public class listaAscensos {
     
     public void mostrar() {
 
-        NodoAscenso actual = cabeza;
+        nodoAscenso actual = cabeza;
 
         while (actual != null) {
 
@@ -55,7 +55,7 @@ public class listaAscensos {
 
         int contador = 0;
 
-        NodoAscenso actual = cabeza;
+        nodoAscenso actual = cabeza;
 
         while (actual != null) {
             contador++;
@@ -72,7 +72,7 @@ public class listaAscensos {
             return null;
         }
 
-        NodoAscenso actual = cabeza;
+        nodoAscenso actual = cabeza;
         int contador = 0;
 
         while (actual != null) {
