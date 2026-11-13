@@ -7,7 +7,7 @@ public class nodoAscenso {
 
     
     private EmpleadoAscenso empleado;
-    private NodoAscenso siguiente;
+    private nodoAscenso siguiente;
 
     
     public nodoAscenso(EmpleadoAscenso empleado) {
