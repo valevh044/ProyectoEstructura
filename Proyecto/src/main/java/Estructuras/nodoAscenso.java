@@ -3,14 +3,14 @@ package Estructuras;
 
 import datos.EmpleadoAscenso;
 
-public class NodoAscenso {
+public class nodoAscenso {
 
     
     private EmpleadoAscenso empleado;
-    private NodoAscenso siguiente;
+    private nodoAscenso siguiente;
 
     
-    public NodoAscenso(EmpleadoAscenso empleado) {
+    public nodoAscenso(EmpleadoAscenso empleado) {
         this.empleado = empleado;
         this.siguiente = null;
     }
@@ -26,12 +26,12 @@ public class NodoAscenso {
     }
 
   
-    public NodoAscenso getSiguiente() {
+    public nodoAscenso getSiguiente() {
         return siguiente;
     }
 
    
-    public void setSiguiente(NodoAscenso siguiente) {
+    public void setSiguiente(nodoAscenso siguiente) {
         this.siguiente = siguiente;
     }
 }
