@@ -52,7 +52,6 @@ public class FrmFabrica extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CarFactory-Fide");
-        setPreferredSize(new java.awt.Dimension(1100, 700));
         setResizable(false);
 
         pnlPrincipal.setBackground(new java.awt.Color(23, 43, 61));
@@ -293,7 +292,7 @@ public class FrmFabrica extends javax.swing.JFrame {
 
         lblPedidoLineal3.setBackground(new java.awt.Color(255, 255, 255));
         lblPedidoLineal3.setForeground(new java.awt.Color(255, 255, 255));
-        lblPedidoLineal3.setText("Pedido: Sin asiganr");
+        lblPedidoLineal3.setText("Pedido: Sin asignar");
 
         javax.swing.GroupLayout pnlLineal3Layout = new javax.swing.GroupLayout(pnlLineal3);
         pnlLineal3.setLayout(pnlLineal3Layout);
@@ -359,7 +358,7 @@ public class FrmFabrica extends javax.swing.JFrame {
                     .addComponent(pnlHub, javax.swing.GroupLayout.DEFAULT_SIZE, 1162, Short.MAX_VALUE)
                     .addComponent(pnlEconomía, javax.swing.GroupLayout.DEFAULT_SIZE, 1162, Short.MAX_VALUE)
                     .addComponent(pnlProduccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlPrincipalLayout.setVerticalGroup(
             pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -371,7 +370,7 @@ public class FrmFabrica extends javax.swing.JFrame {
                 .addComponent(pnlHub, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51)
                 .addComponent(pnlProduccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
