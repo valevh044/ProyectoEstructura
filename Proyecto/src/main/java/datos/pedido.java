@@ -1,13 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package datos;
 
-/**
- *
- * @author valev
- */
+
 public class pedido {
     
     private static int contador = 1;
@@ -15,11 +8,18 @@ public class pedido {
     private String identificador;
     private String tipoAutomovil;
     private String estado;
+    private tipoAuto tipo;                       // NUEVO: el auto completo (nombre, ganancia, materiales)
 
     public pedido(String tipoAutomovil) {
         this.identificador = "PED-" + contador++;
         this.tipoAutomovil = tipoAutomovil;
         this.estado = "Disponible";
+    }
+
+    // NUEVO: constructor que recibe el tipo de auto completo
+    public pedido(tipoAuto tipo) {
+        this(tipo.getNombre());                  // reutiliza el constructor de arriba (genera el ID y el estado)
+        this.tipo = tipo;
     }
 
     public String getIdentificador() {
@@ -32,6 +32,11 @@ public class pedido {
 
     public void setTipoAutomovil(String tipoAutomovil) {
         this.tipoAutomovil = tipoAutomovil;
+    }
+
+    // NUEVO: permite obtener la ganancia y los materiales requeridos
+    public tipoAuto getTipo() {
+        return tipo;
     }
 
     public String getEstado() {
