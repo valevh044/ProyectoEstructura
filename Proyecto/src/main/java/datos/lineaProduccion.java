@@ -57,12 +57,29 @@ public class lineaProduccion {
 
     public boolean agregarMaterial(material nuevoMaterial) {
 
-    if (nuevoMaterial == null || estaLibre()) {
-        return false;
+        if (nuevoMaterial == null || estaLibre()) {
+            return false;
+        }
+        materialesRecibidos.agregar(nuevoMaterial);
+        return true;
     }
-    materialesRecibidos.agregar(nuevoMaterial);
-    return true;
-}
+
+    public boolean tieneMaterialesNecesarios(tipoAuto auto) {
+        if (auto == null) {
+            return false;
+        }
+        if (!materialesRecibidos.contieneMaterial(auto.getMaterialRequerido1())) {
+            return false;
+        }
+        if (!materialesRecibidos.contieneMaterial(auto.getMaterialRequerido2())) {
+            return false;
+        }
+        if (auto.getMaterialRequerido3() != null) {
+            if (!materialesRecibidos.contieneMaterial(  auto.getMaterialRequerido3())) {
+                return false;
+            }
+        } return true;
+    }
 
     public boolean completarConstruccion() {
 

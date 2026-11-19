@@ -3,12 +3,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package datos;
+
 import Estructuras.ListaPedidos;
+
 /**
  *
  * @author felinava06
  */
 public class Fabrica {
+
     private int numeroFabrica;
     private double objetivoEconomico;
     private double dineroAcumulado;
@@ -52,7 +55,7 @@ public class Fabrica {
             objetivoEconomico = 275000;
         } else {
             throw new IllegalArgumentException(
-                "Número de fábrica inválido"
+                    "Número de fábrica inválido"
             );
         }
     }
@@ -62,11 +65,8 @@ public class Fabrica {
         for (int i = 0; i < 15; i++) {
 
             int indice = generarIndiceAuto();
-
             tipoAuto auto = tipoAuto.obtenerPorIndice(indice);
-
             pedido nuevo = new pedido(auto.getNombre());
-
             pedidos.agregar(nuevo);
         }
     }
@@ -107,13 +107,11 @@ public class Fabrica {
                 || !seleccionado.getEstado().equals("Disponible")) {
             return false;
         }
-
         lineaProduccion linea = obtenerLinea(numeroLinea);
 
         if (linea == null) {
             return false;
         }
-
         if (linea.asignarPedido(seleccionado)) {
             seleccionado.setEstado("En construcción");
             return true;
@@ -122,46 +120,83 @@ public class Fabrica {
         return false;
     }
 
+    public boolean agregarMaterialALinea(int posicionMaterial, int numeroLinea) {
+
+    lineaProduccion linea = obtenerLinea(numeroLinea);
+
+    if (linea == null || linea.estaLibre()) {
+        return false;
+    }
+
+    pedido pedidoActual = linea.getPedidoActual();
+
+    tipoAuto auto = obtenerAutoPorNombre(
+            pedidoActual.getTipoAutomovil()
+    );
+
+    if (auto == null) {
+        return false;
+    }
+
+    material seleccionado
+            = cinta.retirarPorPosicion(posicionMaterial);
+
+    if (seleccionado == null) {
+        return false;
+    }
+
+    String nombreMaterial
+            = seleccionado.getTipo().getAuto();
+
+    boolean necesario
+            = nombreMaterial.equals(auto.getMaterialRequerido1())
+            || nombreMaterial.equals(auto.getMaterialRequerido2())
+            || (auto.getMaterialRequerido3() != null
+            && nombreMaterial.equals( auto.getMaterialRequerido3()));
+
+    if (!necesario) {
+        cinta.agregarMaterial(seleccionado);
+        return false;
+    }
+    if (linea.getMaterialesRecibidos()
+            .contieneMaterial(nombreMaterial)) {
+        cinta.agregarMaterial(seleccionado);
+        return false;
+    }
+    linea.agregarMaterial(seleccionado);
+    abastecerCinta();
+    return true;
+}
+
     public boolean completarConstruccion(int numeroLinea) {
-
         lineaProduccion linea = obtenerLinea(numeroLinea);
-
         if (linea == null || linea.estaLibre()) {
             return false;
         }
-
         pedido actual = linea.getPedidoActual();
-
-        tipoAuto auto = obtenerAutoPorNombre(
-            actual.getTipoAutomovil()
-        );
-
+        tipoAuto auto = obtenerAutoPorNombre(actual.getTipoAutomovil());
         if (auto == null) {
             return false;
         }
-
+        if (!linea.tieneMaterialesNecesarios(auto)) {
+            return false;
+        }
         actual.setEstado("Completado");
-
         dineroAcumulado += auto.getGanancia();
-
         linea.completarConstruccion();
-
         return true;
     }
-
+    
     private tipoAuto obtenerAutoPorNombre(String nombre) {
-
-        for (int i = 1; i <= 4; i++) {
-
-            tipoAuto auto = tipoAuto.obtenerPorIndice(i);
-
-            if (auto.getNombre().equals(nombre)) {
-                return auto;
-            }
+    for (int i = 1; i <= 4; i++) {
+        tipoAuto auto = tipoAuto.obtenerPorIndice(i);
+        if (auto.getNombre().equals(nombre)) {
+            return auto;
         }
-
-        return null;
     }
+
+    return null;
+}
 
     private lineaProduccion obtenerLinea(int numero) {
 
@@ -179,7 +214,6 @@ public class Fabrica {
     public void abastecerCinta() {
 
         if (cinta.getCantidadActual() <= 3) {
-
             while (cinta.getCantidadActual()
                     < cinta.getCapacidadMaxima()) {
 
@@ -190,19 +224,15 @@ public class Fabrica {
                 if (aleatorio < 0.1667) {
                     tipo = new tipoMaterial("Motor de lujo", 500);
                 } else if (aleatorio < 0.3334) {
-                    tipo = new tipoMaterial(
-                        "Motor especial deportivo", 2000);
+                    tipo = new tipoMaterial("Motor especial deportivo", 2000);
                 } else if (aleatorio < 0.5001) {
                     tipo = new tipoMaterial("Carrocería", 500);
                 } else if (aleatorio < 0.6668) {
-                    tipo = new tipoMaterial(
-                        "Carrocería especial", 800);
+                    tipo = new tipoMaterial("Carrocería especial", 800);
                 } else if (aleatorio < 0.8335) {
-                    tipo = new tipoMaterial(
-                        "Llantas deportivas", 2000);
+                    tipo = new tipoMaterial("Llantas deportivas", 2000);
                 } else {
-                    tipo = new tipoMaterial(
-                        "Llantas únicas de trabajo", 800);
+                    tipo = new tipoMaterial("Llantas únicas de trabajo", 800);
                 }
 
                 cinta.agregarMaterial(new material(tipo));
@@ -219,11 +249,8 @@ public class Fabrica {
         }
 
         double perdida = basurero.desecharMateriales(eliminado);
-
         dineroAcumulado -= perdida;
-
         abastecerCinta();
-
         return perdida;
     }
 
@@ -267,4 +294,3 @@ public class Fabrica {
         return pedidos;
     }
 }
-    
