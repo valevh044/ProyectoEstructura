@@ -205,7 +205,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
-        new FrmFabrica(1).setVisible(true);
+        new FrmFabrica(new datos.Juego()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnIniciarActionPerformed
 

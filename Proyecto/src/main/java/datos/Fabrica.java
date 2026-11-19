@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package datos;
 
 import Estructuras.ListaPedidos;
@@ -66,7 +62,7 @@ public class Fabrica {
 
             int indice = generarIndiceAuto();
             tipoAuto auto = tipoAuto.obtenerPorIndice(indice);
-            pedido nuevo = new pedido(auto.getNombre());
+            pedido nuevo = new pedido(auto);
             pedidos.agregar(nuevo);
         }
     }
@@ -122,51 +118,51 @@ public class Fabrica {
 
     public boolean agregarMaterialALinea(int posicionMaterial, int numeroLinea) {
 
-    lineaProduccion linea = obtenerLinea(numeroLinea);
+        lineaProduccion linea = obtenerLinea(numeroLinea);
 
-    if (linea == null || linea.estaLibre()) {
-        return false;
+        if (linea == null || linea.estaLibre()) {
+            return false;
+        }
+
+        pedido pedidoActual = linea.getPedidoActual();
+
+        tipoAuto auto = obtenerAutoPorNombre(
+                pedidoActual.getTipoAutomovil()
+        );
+
+        if (auto == null) {
+            return false;
+        }
+
+        material seleccionado
+                = cinta.retirarPorPosicion(posicionMaterial);
+
+        if (seleccionado == null) {
+            return false;
+        }
+
+        String nombreMaterial
+                = seleccionado.getTipo().getAuto();
+
+        boolean necesario
+                = nombreMaterial.equals(auto.getMaterialRequerido1())
+                || nombreMaterial.equals(auto.getMaterialRequerido2())
+                || (auto.getMaterialRequerido3() != null
+                && nombreMaterial.equals(auto.getMaterialRequerido3()));
+
+        if (!necesario) {
+            cinta.agregarMaterial(seleccionado);
+            return false;
+        }
+        if (linea.getMaterialesRecibidos()
+                .contieneMaterial(nombreMaterial)) {
+            cinta.agregarMaterial(seleccionado);
+            return false;
+        }
+        linea.agregarMaterial(seleccionado);
+        abastecerCinta();
+        return true;
     }
-
-    pedido pedidoActual = linea.getPedidoActual();
-
-    tipoAuto auto = obtenerAutoPorNombre(
-            pedidoActual.getTipoAutomovil()
-    );
-
-    if (auto == null) {
-        return false;
-    }
-
-    material seleccionado
-            = cinta.retirarPorPosicion(posicionMaterial);
-
-    if (seleccionado == null) {
-        return false;
-    }
-
-    String nombreMaterial
-            = seleccionado.getTipo().getAuto();
-
-    boolean necesario
-            = nombreMaterial.equals(auto.getMaterialRequerido1())
-            || nombreMaterial.equals(auto.getMaterialRequerido2())
-            || (auto.getMaterialRequerido3() != null
-            && nombreMaterial.equals( auto.getMaterialRequerido3()));
-
-    if (!necesario) {
-        cinta.agregarMaterial(seleccionado);
-        return false;
-    }
-    if (linea.getMaterialesRecibidos()
-            .contieneMaterial(nombreMaterial)) {
-        cinta.agregarMaterial(seleccionado);
-        return false;
-    }
-    linea.agregarMaterial(seleccionado);
-    abastecerCinta();
-    return true;
-}
 
     public boolean completarConstruccion(int numeroLinea) {
         lineaProduccion linea = obtenerLinea(numeroLinea);
@@ -187,16 +183,25 @@ public class Fabrica {
         return true;
     }
     
-    private tipoAuto obtenerAutoPorNombre(String nombre) {
-    for (int i = 1; i <= 4; i++) {
-        tipoAuto auto = tipoAuto.obtenerPorIndice(i);
-        if (auto.getNombre().equals(nombre)) {
-            return auto;
+    public boolean cancelarPedido(int numeroLinea) {
+        lineaProduccion linea = obtenerLinea(numeroLinea);
+        if (linea == null || linea.estaLibre()) {
+            return false;
         }
+        linea.getPedidoActual().setEstado("Disponible");
+        return linea.cancelarConstruccion();
     }
 
-    return null;
-}
+    private tipoAuto obtenerAutoPorNombre(String nombre) {
+        for (int i = 1; i <= 4; i++) {
+            tipoAuto auto = tipoAuto.obtenerPorIndice(i);
+            if (auto.getNombre().equals(nombre)) {
+                return auto;
+            }
+        }
+
+        return null;
+    }
 
     private lineaProduccion obtenerLinea(int numero) {
 
@@ -211,31 +216,11 @@ public class Fabrica {
         return null;
     }
 
+    //Si la cinta tiene 3 materiales o menos, la completa con materiales aleatorios.
     public void abastecerCinta() {
-
         if (cinta.getCantidadActual() <= 3) {
-            while (cinta.getCantidadActual()
-                    < cinta.getCapacidadMaxima()) {
-
-                double aleatorio = Math.random();
-
-                tipoMaterial tipo;
-
-                if (aleatorio < 0.1667) {
-                    tipo = new tipoMaterial("Motor de lujo", 500);
-                } else if (aleatorio < 0.3334) {
-                    tipo = new tipoMaterial("Motor especial deportivo", 2000);
-                } else if (aleatorio < 0.5001) {
-                    tipo = new tipoMaterial("Carrocería", 500);
-                } else if (aleatorio < 0.6668) {
-                    tipo = new tipoMaterial("Carrocería especial", 800);
-                } else if (aleatorio < 0.8335) {
-                    tipo = new tipoMaterial("Llantas deportivas", 2000);
-                } else {
-                    tipo = new tipoMaterial("Llantas únicas de trabajo", 800);
-                }
-
-                cinta.agregarMaterial(new material(tipo));
+            while (cinta.getCantidadActual() < cinta.getCapacidadMaxima()) {
+                cinta.agregarMaterial(new material(tipoMaterial.aleatorio()));
             }
         }
     }

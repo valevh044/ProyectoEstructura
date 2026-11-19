@@ -3,8 +3,17 @@ package Vista;
 public class FrmFabrica extends javax.swing.JFrame {
 
     // ===================== ATRIBUTOS =====================
-    private int numeroFabrica;
-    private Estructuras.ListaPedidos listaPedidos = new Estructuras.ListaPedidos();
+    private datos.Juego juego;          // controla el avance entre las 3 fábricas
+    private datos.Fabrica fabrica;      // la fábrica que se está jugando
+    private int posicionSeleccionada = -1; // material seleccionado en la cinta (-1 = ninguno)
+    private int materialesDesechados = 0;
+
+    // ===================== COLORES =====================
+    private static final java.awt.Color COLOR_GRIS = new java.awt.Color(44, 62, 80);
+    private static final java.awt.Color COLOR_TEXTO2 = new java.awt.Color(149, 165, 166);
+    private static final java.awt.Color COLOR_FONDO = new java.awt.Color(15, 25, 35);
+    private static final java.awt.Color COLOR_NARANJA = new java.awt.Color(243, 156, 18);
+    private static final java.awt.Color COLOR_VERDE = new java.awt.Color(46, 204, 113);
 
     // ===================== CONSTRUCTOR =====================
     /**
@@ -13,9 +22,10 @@ public class FrmFabrica extends javax.swing.JFrame {
      * @param numeroFabrica 1, 2 o 3. Define el objetivo y la capacidad de la
      * cinta.
      */
-    public FrmFabrica(int numeroFabrica) {
+    public FrmFabrica(datos.Juego juego) {
         initComponents();
-        this.numeroFabrica = numeroFabrica;
+        this.juego = juego;
+        this.fabrica = juego.getFabricaActual();
 
         // 1. Modelos de la tabla y el combo (sin arreglos)
         configurarComponentes();
@@ -37,8 +47,7 @@ public class FrmFabrica extends javax.swing.JFrame {
 
         // 4. Datos del juego
         configurarFabrica();
-        generarPedidos();
-        actualizarTablaPedidos();
+        refrescarTodo();
 
         // 5. Tamaño y posición de la ventana (siempre al final)
         pnlFondo.setPreferredSize(new java.awt.Dimension(1280, 740));
@@ -74,28 +83,12 @@ public class FrmFabrica extends javax.swing.JFrame {
         cmbLinea.addItem("Línea 3");
     }
 
-    /**
-     * Ajusta los textos del HUD según el número de fábrica.
-     */
+    // Ajusta los textos del HUD según la fábrica actual.
     private void configurarFabrica() {
-        lblFabrica.setText("FÁBRICA " + numeroFabrica + " / 3");
-        lblObjetivo.setText(formatearDinero(obtenerObjetivo()));
-        lblMensaje.setText("   Bienvenido a la Fábrica " + numeroFabrica
+        lblFabrica.setText("FÁBRICA " + fabrica.getNumeroFabrica() + " / 3");
+        lblObjetivo.setText(formatearDinero(fabrica.getObjetivoEconomico()));
+        lblMensaje.setText("   Bienvenido a la Fábrica " + fabrica.getNumeroFabrica()
                 + ". Asigná un pedido para empezar.");
-    }
-
-    /**
-     * Devuelve el dinero que hay que alcanzar en la fábrica actual.
-     */
-    private int obtenerObjetivo() {
-        switch (numeroFabrica) {
-            case 1:
-                return 90000;
-            case 2:
-                return 125000;
-            default:
-                return 275000;
-        }
     }
 
     /**
@@ -108,26 +101,15 @@ public class FrmFabrica extends javax.swing.JFrame {
         return formato.format(monto);
     }
 
-    // ===================== PEDIDOS =====================
-    /**
-     * Genera 15 pedidos aleatorios de los 4 tipos de auto.
-     */
-    private void generarPedidos() {
-        for (int i = 0; i < 15; i++) {
-            int indice = (int) (Math.random() * 4) + 1;   // número del 1 al 4
-            listaPedidos.agregar(new datos.pedido(datos.tipoAuto.obtenerPorIndice(indice)));
-        }
-    }
-
     /**
      * Recorre la lista enlazada de pedidos y la muestra en la tabla.
      */
     private void actualizarTablaPedidos() {
         javax.swing.table.DefaultTableModel modelo
                 = (javax.swing.table.DefaultTableModel) tblPedidos.getModel();
-        modelo.setRowCount(listaPedidos.tamano());
+        modelo.setRowCount(fabrica.getPedidos().tamano());
 
-        Estructuras.NodoPedido actual = listaPedidos.getCabeza();
+        Estructuras.NodoPedido actual = fabrica.getPedidos().getCabeza();
         int fila = 0;
         while (actual != null) {
             datos.pedido p = actual.getDato();
@@ -137,6 +119,291 @@ public class FrmFabrica extends javax.swing.JFrame {
             modelo.setValueAt(p.getEstado(), fila, 3);
             actual = actual.getSiguiente();
             fila++;
+        }
+    }
+
+    // ===================== CINTA TRANSPORTADORA =====================
+    /**
+     * Vuelve a dibujar los materiales de la cinta recorriendo su lista
+     * enlazada.
+     */
+    private void refrescarCinta() {
+        datos.CintaTransportadora cinta = fabrica.getCinta();
+        pnlSlots.removeAll();
+
+        Estructuras.Nodo actual = cinta.getCabeza();
+        int posicion = 0;
+        while (actual != null) {
+            pnlSlots.add(crearBotonMaterial(actual.getDato(), posicion));
+            actual = actual.getSiguiente();
+            posicion++;
+        }
+
+        lblCintaCapacidad.setText(cinta.getCantidadActual() + " / "
+                + cinta.getCapacidadMaxima() + " espacios");
+        pnlSlots.revalidate();
+        pnlSlots.repaint();
+    }
+
+    /**
+     * Crea el botón que representa un material de la cinta.
+     */
+    private javax.swing.JButton crearBotonMaterial(datos.material m, int posicion) {
+        javax.swing.JButton btn = new javax.swing.JButton(
+                "<html><center>" + m.getTipo().getAuto()
+                + "<br><br>" + formatearDinero(m.getTipo().getValor())
+                + "</center></html>");
+        btn.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+        btn.setForeground(new java.awt.Color(236, 240, 241));
+        if (posicion == posicionSeleccionada) {
+            btn.setBackground(new java.awt.Color(52, 152, 219));   // azul = seleccionado
+        } else {
+            btn.setBackground(new java.awt.Color(44, 62, 80));     // gris = normal
+        }
+        btn.setFocusPainted(false);
+        btn.setBorderPainted(false);
+        btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn.addActionListener(e -> seleccionarMaterial(posicion));
+        return btn;
+    }
+
+    /**
+     * Busca el material que está en una posición de la cinta.
+     */
+    private datos.material obtenerMaterialCinta(int posicion) {
+        Estructuras.Nodo actual = fabrica.getCinta().getCabeza();
+        int i = 0;
+        while (actual != null) {
+            if (i == posicion) {
+                return actual.getDato();
+            }
+            actual = actual.getSiguiente();
+            i++;
+        }
+        return null;
+    }
+
+    /**
+     * Marca un material como seleccionado y muestra su información en el
+     * basurero.
+     */
+    private void seleccionarMaterial(int posicion) {
+        posicionSeleccionada = posicion;
+        datos.material m = obtenerMaterialCinta(posicion);
+
+        lblBasMaterial.setText(m.getTipo().getAuto());
+        lblBasPerdida.setText("Pérdida si se desecha: "
+                + formatearDinero(m.getTipo().calcularPerdida()));
+        mostrarMensaje(m.getTipo().getAuto()
+                + " seleccionado. Ponelo en una línea o desechalo.");
+
+        refrescarCinta();   // para que el seleccionado se vea azul
+    }
+
+    /**
+     * Muestra un mensaje en la barra inferior (reemplaza a JOptionPane).
+     */
+    private void mostrarMensaje(String texto) {
+        lblMensaje.setText("   " + texto);
+    }
+
+    // ===================== REFRESCAR PANTALLA =====================
+    /**
+     * Actualiza toda la pantalla según el estado actual de la fábrica.
+     */
+    private void refrescarTodo() {
+        actualizarTablaPedidos();
+        refrescarCinta();
+        refrescarLinea(fabrica.getLinea1(), lblL1Estado, lblL1Pedido, lblL1Ganancia,
+                lblL1Mat1, lblL1Mat2, lblL1Mat3, btnL1Construir);
+        refrescarLinea(fabrica.getLinea2(), lblL2Estado, lblL2Pedido, lblL2Ganancia,
+                lblL2Mat1, lblL2Mat2, lblL2Mat3, btnL2Construir);
+        refrescarLinea(fabrica.getLinea3(), lblL3Estado, lblL3Pedido, lblL3Ganancia,
+                lblL3Mat1, lblL3Mat2, lblL3Mat3, btnL3Construir);
+        refrescarHud();
+    }
+
+    /**
+     * Actualiza dinero, pérdidas y barra de progreso.
+     */
+    private void refrescarHud() {
+        double dinero = fabrica.getDineroAcumulado();
+        lblDinero.setText(formatearDinero(dinero));
+        lblPerdidas.setText(formatearDinero(fabrica.getBasurero().getPerdidasAcumuladas()));
+
+        int progreso = (int) (dinero * 100 / fabrica.getObjetivoEconomico());
+        if (progreso < 0) {
+            progreso = 0;
+        }
+        if (progreso > 100) {
+            progreso = 100;
+        }
+        pbProgreso.setValue(progreso);
+    }
+
+    /**
+     * Muestra en la tarjeta de una línea su estado, pedido y materiales.
+     */
+    private void refrescarLinea(datos.lineaProduccion linea, javax.swing.JLabel lblEstado,
+            javax.swing.JLabel lblPedido, javax.swing.JLabel lblGanancia,
+            javax.swing.JLabel lblMat1, javax.swing.JLabel lblMat2, javax.swing.JLabel lblMat3,
+            javax.swing.JButton btnConstruir) {
+
+        // Línea libre
+        if (linea.estaLibre()) {
+            pintarEstado(lblEstado, "DISPONIBLE", COLOR_GRIS, COLOR_TEXTO2);
+            lblPedido.setText("Sin pedido asignado");
+            lblGanancia.setText("");
+            lblMat1.setText("—");
+            lblMat1.setForeground(COLOR_TEXTO2);
+            lblMat2.setText("—");
+            lblMat2.setForeground(COLOR_TEXTO2);
+            lblMat3.setText("—");
+            lblMat3.setForeground(COLOR_TEXTO2);
+            btnConstruir.setEnabled(false);
+            btnConstruir.setBackground(COLOR_GRIS);
+            return;
+        }
+
+        // Línea con pedido
+        datos.pedido p = linea.getPedidoActual();
+        datos.tipoAuto auto = p.getTipo();
+        lblPedido.setText(p.getIdentificador() + " · " + p.getTipoAutomovil());
+        lblPedido.setToolTipText(p.getTipoAutomovil());   // nombre completo al pasar el mouse
+        lblGanancia.setText("+" + formatearDinero(auto.getGanancia()));
+
+        mostrarMaterial(lblMat1, auto.getMaterialRequerido1(), linea);
+        mostrarMaterial(lblMat2, auto.getMaterialRequerido2(), linea);
+        mostrarMaterial(lblMat3, auto.getMaterialRequerido3(), linea);
+
+        if (linea.tieneMaterialesNecesarios(auto)) {
+            pintarEstado(lblEstado, "LISTA", COLOR_VERDE, COLOR_FONDO);
+            btnConstruir.setEnabled(true);
+            btnConstruir.setBackground(COLOR_VERDE);
+        } else {
+            pintarEstado(lblEstado, "OCUPADA", COLOR_NARANJA, COLOR_FONDO);
+            btnConstruir.setEnabled(false);
+            btnConstruir.setBackground(COLOR_GRIS);
+        }
+    }
+
+    /**
+     * Muestra un material requerido: ✔ verde si ya está en la línea, ○ gris si
+     * falta.
+     */
+    private void mostrarMaterial(javax.swing.JLabel lbl, String nombre, datos.lineaProduccion linea) {
+        if (nombre == null) {          // los autos de 2 materiales no usan el tercero
+            lbl.setText("");
+            return;
+        }
+        if (linea.getMaterialesRecibidos().contieneMaterial(nombre)) {
+            lbl.setText("✔  " + nombre);
+            lbl.setForeground(COLOR_VERDE);
+        } else {
+            lbl.setText("○  " + nombre);
+            lbl.setForeground(COLOR_TEXTO2);
+        }
+    }
+
+    /**
+     * Cambia el texto y los colores de la etiqueta de estado de una línea.
+     */
+    private void pintarEstado(javax.swing.JLabel lbl, String texto,
+            java.awt.Color fondo, java.awt.Color letra) {
+        lbl.setText(texto);
+        lbl.setBackground(fondo);
+        lbl.setForeground(letra);
+    }
+
+    /**
+     * Devuelve la línea de producción según su número (1, 2 o 3).
+     */
+    private datos.lineaProduccion obtenerLinea(int numeroLinea) {
+        switch (numeroLinea) {
+            case 1:
+                return fabrica.getLinea1();
+            case 2:
+                return fabrica.getLinea2();
+            default:
+                return fabrica.getLinea3();
+        }
+    }
+
+    /**
+     * Quita la selección de material y limpia el basurero.
+     */
+    private void limpiarSeleccion() {
+        posicionSeleccionada = -1;
+        lblBasMaterial.setText("Ninguno");
+        lblBasPerdida.setText("Pérdida si se desecha: $0");
+    }
+
+    /**
+     * Pone el material seleccionado de la cinta en una línea.
+     */
+    private void ponerMaterial(int numeroLinea) {
+        if (posicionSeleccionada == -1) {
+            mostrarMensaje("Primero seleccioná un material de la cinta.");
+            return;
+        }
+        if (obtenerLinea(numeroLinea).estaLibre()) {
+            mostrarMensaje("La Línea " + numeroLinea + " no tiene pedido. Asigná uno primero.");
+            return;
+        }
+
+        String nombre = obtenerMaterialCinta(posicionSeleccionada).getTipo().getAuto();
+
+        if (fabrica.agregarMaterialALinea(posicionSeleccionada, numeroLinea)) {
+            mostrarMensaje(nombre + " colocado en la Línea " + numeroLinea + ".");
+        } else {
+            mostrarMensaje(nombre + " no sirve para el auto de la Línea " + numeroLinea
+                    + " o ya lo tiene. Probá en otra línea o desechalo.");
+        }
+        limpiarSeleccion();
+        refrescarTodo();
+    }
+
+    /**
+     * Construye el auto de una línea y suma la ganancia.
+     */
+    private void construir(int numeroLinea) {
+        datos.pedido p = obtenerLinea(numeroLinea).getPedidoActual();
+        if (p == null) {
+            return;
+        }
+        double ganancia = p.getTipo().getGanancia();
+
+        if (fabrica.completarConstruccion(numeroLinea)) {
+            mostrarMensaje("¡" + p.getTipoAutomovil() + " construido en la Línea " + numeroLinea
+                    + "! Ganaste " + formatearDinero(ganancia) + ".");
+        } else {
+            mostrarMensaje("A la Línea " + numeroLinea + " todavía le faltan materiales.");
+        }
+        refrescarTodo();
+        verificarObjetivo();
+    }
+
+    /**
+     * Cancela el pedido de una línea.
+     */
+    private void cancelar(int numeroLinea) {
+        if (fabrica.cancelarPedido(numeroLinea)) {
+            mostrarMensaje("Pedido de la Línea " + numeroLinea
+                    + " cancelado. Volvió a la lista y se perdieron sus materiales.");
+        } else {
+            mostrarMensaje("La Línea " + numeroLinea + " no tiene pedido para cancelar.");
+        }
+        refrescarTodo();
+    }
+
+    /**
+     * Revisa si ya se alcanzó el objetivo de la fábrica.
+     */
+    private void verificarObjetivo() {
+        if (fabrica.objetivoAlcanzado()) {
+            mostrarMensaje("¡Objetivo cumplido! Superaste la Fábrica "
+                    + fabrica.getNumeroFabrica() + ".");
+            // Etapa 6: abrir la jerarquía y pasar a la siguiente fábrica
         }
     }
 
@@ -364,6 +631,7 @@ public class FrmFabrica extends javax.swing.JFrame {
         btnAsignar.setBorderPainted(false);
         btnAsignar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnAsignar.setFocusPainted(false);
+        btnAsignar.addActionListener(this::btnAsignarActionPerformed);
         pnlHub.add(btnAsignar);
         btnAsignar.setBounds(200, 285, 185, 40);
 
@@ -460,6 +728,7 @@ public class FrmFabrica extends javax.swing.JFrame {
         btnL3Construir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnL3Construir.setEnabled(false);
         btnL3Construir.setFocusPainted(false);
+        btnL3Construir.addActionListener(this::btnL3ConstruirActionPerformed);
         pnlLinea39.add(btnL3Construir);
         btnL3Construir.setBounds(15, 268, 230, 36);
 
@@ -469,6 +738,7 @@ public class FrmFabrica extends javax.swing.JFrame {
         btnL3Cancelar.setContentAreaFilled(false);
         btnL3Cancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnL3Cancelar.setFocusPainted(false);
+        btnL3Cancelar.addActionListener(this::btnL3CancelarActionPerformed);
         pnlLinea39.add(btnL3Cancelar);
         btnL3Cancelar.setBounds(15, 308, 230, 24);
 
@@ -565,6 +835,7 @@ public class FrmFabrica extends javax.swing.JFrame {
         btnL1Construir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnL1Construir.setEnabled(false);
         btnL1Construir.setFocusPainted(false);
+        btnL1Construir.addActionListener(this::btnL1ConstruirActionPerformed);
         pnlLinea1.add(btnL1Construir);
         btnL1Construir.setBounds(15, 268, 230, 36);
 
@@ -574,6 +845,7 @@ public class FrmFabrica extends javax.swing.JFrame {
         btnL1Cancelar.setContentAreaFilled(false);
         btnL1Cancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnL1Cancelar.setFocusPainted(false);
+        btnL1Cancelar.addActionListener(this::btnL1CancelarActionPerformed);
         pnlLinea1.add(btnL1Cancelar);
         btnL1Cancelar.setBounds(15, 308, 230, 24);
 
@@ -670,6 +942,7 @@ public class FrmFabrica extends javax.swing.JFrame {
         btnL2Construir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnL2Construir.setEnabled(false);
         btnL2Construir.setFocusPainted(false);
+        btnL2Construir.addActionListener(this::btnL2ConstruirActionPerformed);
         pnlLinea2.add(btnL2Construir);
         btnL2Construir.setBounds(15, 268, 230, 36);
 
@@ -679,6 +952,7 @@ public class FrmFabrica extends javax.swing.JFrame {
         btnL2Cancelar.setContentAreaFilled(false);
         btnL2Cancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnL2Cancelar.setFocusPainted(false);
+        btnL2Cancelar.addActionListener(this::btnL2CancelarActionPerformed);
         pnlLinea2.add(btnL2Cancelar);
         btnL2Cancelar.setBounds(15, 308, 230, 24);
 
@@ -703,7 +977,7 @@ public class FrmFabrica extends javax.swing.JFrame {
 
         pnlSlots.setBackground(new java.awt.Color(15, 25, 35));
         pnlSlots.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        pnlSlots.setLayout(new java.awt.GridLayout());
+        pnlSlots.setLayout(new java.awt.GridLayout(1, 0));
         pnlCinta.add(pnlSlots);
         pnlSlots.setBounds(15, 42, 790, 145);
 
@@ -773,26 +1047,81 @@ public class FrmFabrica extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnL3PonerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnL3PonerActionPerformed
-        // TODO add your handling code here:
+        ponerMaterial(3);
     }//GEN-LAST:event_btnL3PonerActionPerformed
 
     private void btnL1PonerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnL1PonerActionPerformed
-        // TODO add your handling code here:
+        ponerMaterial(1);
     }//GEN-LAST:event_btnL1PonerActionPerformed
 
     private void btnL2PonerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnL2PonerActionPerformed
-        // TODO add your handling code here:
+        ponerMaterial(2);
     }//GEN-LAST:event_btnL2PonerActionPerformed
 
     private void btnDesecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesecharActionPerformed
-        // TODO add your handling code here:
+        if (posicionSeleccionada == -1) {
+            mostrarMensaje("Primero seleccioná un material de la cinta para desecharlo.");
+            return;
+        }
+        String nombre = obtenerMaterialCinta(posicionSeleccionada).getTipo().getAuto();
+        double perdida = fabrica.desecharMaterial(posicionSeleccionada);
+
+        materialesDesechados++;
+        lblBasTotal.setText("Materiales desechados: " + materialesDesechados);
+        mostrarMensaje(nombre + " desechado. Perdiste " + formatearDinero(perdida) + ".");
+
+        limpiarSeleccion();
+        refrescarTodo();
     }//GEN-LAST:event_btnDesecharActionPerformed
 
     private void cmbLineaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbLineaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbLineaActionPerformed
 
-    
+    private void btnAsignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarActionPerformed
+        int fila = tblPedidos.getSelectedRow();
+        if (fila == -1) {
+            mostrarMensaje("Primero seleccioná un pedido de la tabla.");
+            return;
+        }
+
+        String identificador = (String) tblPedidos.getValueAt(fila, 0);
+        int numeroLinea = cmbLinea.getSelectedIndex() + 1;   // índice 0 → Línea 1
+
+        if (fabrica.asignarPedido(identificador, numeroLinea)) {
+            mostrarMensaje(identificador + " asignado a la Línea " + numeroLinea
+                    + ". Ahora poné los materiales que necesita.");
+        } else {
+            mostrarMensaje("No se pudo asignar: la Línea " + numeroLinea
+                    + " está ocupada o el pedido ya no está disponible.");
+        }
+        refrescarTodo();
+    }//GEN-LAST:event_btnAsignarActionPerformed
+
+    private void btnL1ConstruirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnL1ConstruirActionPerformed
+        construir(1);
+    }//GEN-LAST:event_btnL1ConstruirActionPerformed
+
+    private void btnL2ConstruirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnL2ConstruirActionPerformed
+        construir(2);
+    }//GEN-LAST:event_btnL2ConstruirActionPerformed
+
+    private void btnL3ConstruirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnL3ConstruirActionPerformed
+        construir(3);
+    }//GEN-LAST:event_btnL3ConstruirActionPerformed
+
+    private void btnL1CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnL1CancelarActionPerformed
+        cancelar(1);
+    }//GEN-LAST:event_btnL1CancelarActionPerformed
+
+    private void btnL2CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnL2CancelarActionPerformed
+        cancelar(2);
+    }//GEN-LAST:event_btnL2CancelarActionPerformed
+
+    private void btnL3CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnL3CancelarActionPerformed
+        cancelar(3);
+    }//GEN-LAST:event_btnL3CancelarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAsignar;

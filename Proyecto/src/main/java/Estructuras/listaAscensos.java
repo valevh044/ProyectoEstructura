@@ -36,20 +36,6 @@ public class listaAscensos {
             actual.setSiguiente(nuevo);
         }
     }
-
-    
-    public void mostrar() {
-
-        nodoAscenso actual = cabeza;
-
-        while (actual != null) {
-
-            System.out.println(actual.getEmpleado());
-
-            actual = actual.getSiguiente();
-        }
-    }
-
     
     public int cantidad() {
 
