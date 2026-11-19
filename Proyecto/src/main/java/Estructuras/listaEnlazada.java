@@ -94,6 +94,19 @@ public class listaEnlazada {
         return eliminado;
     }
 
+    public boolean contieneMaterial(String nombreMaterial) {
+        Nodo actual = cabeza;
+        while (actual != null) {
+            if (actual.getDato().getTipo().getAuto()
+                    .equals(nombreMaterial)) {
+                return true;
+            }
+            actual = actual.getSiguiente();
+        }
+
+        return false;
+    }
+
     public void limpiar() {
         cabeza = null;
         cantidad = 0;
