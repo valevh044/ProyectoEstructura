@@ -8,7 +8,7 @@ public class pedido {
     private String identificador;
     private String tipoAutomovil;
     private String estado;
-    private tipoAuto tipo;                       // NUEVO: el auto completo (nombre, ganancia, materiales)
+    private tipoAuto tipo;                       
 
     public pedido(String tipoAutomovil) {
         this.identificador = "PED-" + contador++;
@@ -16,9 +16,9 @@ public class pedido {
         this.estado = "Disponible";
     }
 
-    // NUEVO: constructor que recibe el tipo de auto completo
+    
     public pedido(tipoAuto tipo) {
-        this(tipo.getNombre());                  // reutiliza el constructor de arriba (genera el ID y el estado)
+        this(tipo.getNombre());                  
         this.tipo = tipo;
     }
 
@@ -34,7 +34,7 @@ public class pedido {
         this.tipoAutomovil = tipoAutomovil;
     }
 
-    // NUEVO: permite obtener la ganancia y los materiales requeridos
+    
     public tipoAuto getTipo() {
         return tipo;
     }
