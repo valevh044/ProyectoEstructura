@@ -42,19 +42,15 @@ public class tipoMaterial {
         return valor * 0.60;
     }
 
-    // Devuelve uno de los 6 materiales al azar (para la cinta transportadora)
+    // Devuelve 4 materiales al azar (para la cinta transportadora)
     public static tipoMaterial aleatorio() {
-        switch ((int) (Math.random() * 6)) {
+        switch ((int) (Math.random() * 3)) {
             case 0:
                 return MOTOR_LUJO;
             case 1:
-                return MOTOR_DEPORTIVO;
+                return CARROCERIA_ESPECIAL;
             case 2:
                 return CARROCERIA;
-            case 3:
-                return CARROCERIA_ESPECIAL;
-            case 4:
-                return LLANTAS_DEPORTIVAS;
             default:
                 return LLANTAS_TRABAJO;
         }
